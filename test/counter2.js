@@ -1,9 +1,10 @@
-import { Client, Provider, ProviderRegistry, Result } from '@blockstack/clarity';
-import { assert } from 'chai';
+const { Client, ProviderRegistry, Result } = require('@blockstack/clarity');
+const assert = require('chai').assert;
 
-describe('counter contract test suite', () => {
-  let counterClient: Client;
-  let provider: Provider;
+describe('counter 22222 contract', () => {
+  let counterClient;
+  let provider;
+
   before(async () => {
     provider = await ProviderRegistry.createProvider();
     counterClient = new Client(
@@ -12,22 +13,26 @@ describe('counter contract test suite', () => {
       provider
     );
   });
+
   it('should have a valid syntax', async () => {
     await counterClient.checkContract();
   });
-  describe('deploying an instance of the contract', () => {
+
+  describe('check contract functions', () => {
     const getCounter = async () => {
       const query = counterClient.createQuery({
         method: { name: 'get-counter', args: [] },
       });
+
       const receipt = await counterClient.submitQuery(query);
       const result = Result.unwrapInt(receipt);
       return result;
     };
-    const execMethod = async (method: string) => {
+
+    const execMethod = async (methodName) => {
       const tx = counterClient.createTransaction({
         method: {
-          name: method,
+          name: methodName,
           args: [],
         },
       });
@@ -35,24 +40,29 @@ describe('counter contract test suite', () => {
       const receipt = await counterClient.submitTransaction(tx);
       return receipt;
     };
+
     before(async () => {
       await counterClient.deployContract();
     });
+
     it('should start at zero', async () => {
-      const counter = await getCounter();
-      assert.equal(counter, 0);
+      const start = await getCounter();
+      assert.equal(start, 0);
     });
+
     it('should increment', async () => {
       await execMethod('increment');
       assert.equal(await getCounter(), 1);
       await execMethod('increment');
       assert.equal(await getCounter(), 2);
+      await execMethod('increment');
+      assert.equal(await getCounter(), 3);
     });
-    it('should decrement', async () => {
+
+    it('should increment', async () => {
       await execMethod('decrement');
-      assert.equal(await getCounter(), 1);
-      await execMethod('decrement');
-      assert.equal(await getCounter(), 0);
+      const start = await getCounter();
+      assert.equal(start, 2);
     });
   });
   after(async () => {
