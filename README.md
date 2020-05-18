@@ -1,2 +1,1 @@
-# clarity-contracts
-make some fun with clarity smart contract
+# Clarity Level 0 Smart Contract
