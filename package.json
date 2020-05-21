@@ -1,11 +1,11 @@
 {
-  "name": "clarity-hello-world",
-  "version": "0.0.0",
+  "name": "clarity-auction",
+  "version": "1.0.0",
   "author": {
     "name": "Do Trung Kien",
     "email": "trungkien.keio@gmail.com"
   },
-  "repository": "https://github.com/dotrungkien/clarity-hello-world.git",
+  "repository": "https://github.com/dotrungkien/clarity-auction.git",
   "private": true,
   "engines": {
     "node": ">=10"
